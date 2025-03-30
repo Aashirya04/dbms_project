@@ -1,17 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300&family=Libre+Baskerville:ital,wght@1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+*{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* Thin, modern, and stylish for body text */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Italiana';
+    font-weight: 300;
+}
+
+h1{
+    font-size: 3rem !important;
+}
+
 .home-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1500px;
-    padding-left: 250px;
-    padding-top: 150px;
-    padding-bottom: 70px;
+    max-width: 1350px;
+    padding-left: 180px;
+    padding-top: 180px;
+    padding-bottom:250px;
     gap: 80px;
     background-color: #f5e9e9;
 }
 
 .second-section {
         background-color: #800040;
+        padding:200px;
+        padding-bottom:250px;
 }
 
 .home-box1{
@@ -35,6 +53,7 @@
     font-size: 1.1rem;
     color: white;
     line-height: 1.6;
+    padding-right: 30px;
 }
 
 .home-box {
@@ -57,6 +76,7 @@
     font-size: 1.1rem;
     color: #444;
     line-height: 1.6;
+    padding-right: 30px;
 }
 
 .buttons {
@@ -117,12 +137,26 @@
     align-items: center;
 }
 
+.image-box1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .image-box img {
     width: 100%;
-    max-width: 400px;
+    max-width: 700px;
+    height: auto;
+    border-radius: 10px;
+    padding-right:150px;
+}
+.image-box1 img {
+    width: 130%;
+    max-width: 790px;
     height: auto;
     border-radius: 10px;
 }
+
 
 .third-section {
     text-align: center;
@@ -200,6 +234,8 @@
     font-size: 1.2rem;
     color: black;
     margin-bottom: 50px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
 }
   
 .carousel-container {
@@ -215,21 +251,20 @@
 .carousel {
     width: 85%;
     display: flex;
-    gap: 2px; 
     justify-content: center;
 }
   
 .carousel-item {
-    padding: 0 2px; 
+    padding: 10px; 
 }
   
 .carousel-item img {
-    width: 250px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px;
     display: block;
     margin: auto;
+    width: 100%;  
+    height: 300px; 
+    object-fit: cover; 
+    border-radius: 10px;
 }
   
 .carousel-arrow {
@@ -313,7 +348,6 @@
     color: white;
 }
 
-/* Footer */
 .footer {
     padding: 50px 20px;
     background-color: black;
@@ -355,7 +389,6 @@
     color: #555;
 }
 
-/* Newsletter Form */
 .newsletter-form {
     display: flex;
     gap: 10px;
@@ -440,4 +473,13 @@
     color: #333;
 }
 
-  
+.card img {
+    width: 100%;  
+    height: 200px;  
+    object-fit: cover; 
+    border-radius: 10px; 
+  }
+
+  .slick-slide{
+       margin:10px;
+  }

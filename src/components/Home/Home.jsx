@@ -4,6 +4,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";  
+import {Images} from '../../Images'
 
 const Home = () => {
   const sliderRef = useRef(null);
@@ -16,28 +18,7 @@ const Home = () => {
     slidesToScroll: 1,
     arrows: false, 
     centerMode: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
+};
 
   return (
     <div>
@@ -50,15 +31,16 @@ const Home = () => {
             of art and uncover the stories behind each masterpiece.
           </p>
           <div className="buttons">
+          <Link to="/query">  
             <button className="explore-btn">Explore</button>
+          </Link>
+          <Link to="/query">  
             <button className="learn-btn">Learn More</button>
+          </Link>
           </div>
         </div>
         <div className="home-box image-box">
-          <img
-            src="https://m.media-amazon.com/images/I/91+Ct5aLtTL.jpg"
-            alt="Artistic eye"
-          />
+        <img src ={Images.home} alt="painting" />
         </div>
       </div>
 
@@ -71,45 +53,46 @@ const Home = () => {
             inviting you to explore its beauty and significance.
           </p>
           <div className="buttons">
+          <Link to="/query">  
             <button className="explore-btn1">View</button>
+          </Link>
+          <Link to="/query">  
             <button className="learn-btn1">Learn &gt;</button>
+          </Link>
           </div>
         </div>
-        <div className="home-box1 image-box">
-          <img
-            src="https://m.media-amazon.com/images/I/91+Ct5aLtTL.jpg"
-            alt="Placeholder Art"
-          />
+        <div className="home-box1 image-box1">
+        <img src ={Images.home1} alt="painting" />
         </div>
       </div>
 
-      <div className="third-section">
-        <h1>Explore the Masterpieces of Renowned Artists from Around the World</h1>
+      <div className="third-section" id = "cards">
+        <h1>Global Art Spotlight: Where Creativity Knows No Boundaries</h1>
         <div className="card-container">
           <div className="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iNnp5Niv8Dn7vcNM6c9pdlIS76RVWog5wA&s" alt="Art History" />
-            <h2>Dive into the Rich History of Art Through the Ages</h2>
-            <p>Discover the iconic works that define artistic movements and styles.</p>
-            <a href="#">Learn More &gt;</a>
+            <img src={Images.basel} alt="Art History" />
+            <h2>Art Basel</h2>
+            <p>Art Basel is a premier international art fair held annually in Basel, Miami Beach, Hong Kong, and Paris. It showcases modern and contemporary masterpieces from top galleries worldwide, featuring paintings, sculptures, digital art, and installations. A hub for artists, collectors, and art lovers, Art Basel sets global trends in the art market and fosters cultural exchange.</p>
+            <a href="https://www.artbasel.com/" target="_blank" rel="noopener noreferrer">Learn More &gt;</a>
           </div>
           <div className="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iNnp5Niv8Dn7vcNM6c9pdlIS76RVWog5wA&s" alt="Cultural Art" />
-            <h2>Uncover the Evolution of Art Styles and Their Cultural Significance</h2>
-            <p>From Impressionism to Modernism, explore the styles that shaped art history.</p>
-            <a href="#">Learn More &gt;</a>
+          <img src={Images.centre} alt="Art History" />
+            <h2>Centre Pompidou</h2>
+            <p>The Centre Pompidou is a Parisian cultural icon, famous for its bold inside-out design and vast modern art collection. Home to works by Picasso, Matisse, and Warhol, it also features a public library, live performances, and stunning rooftop views. A must-visit for art lovers!</p>
+            <a href="https://en.wikipedia.org/wiki/Centre_Pompidou" target="_blank" rel="noopener noreferrer">Learn More &gt;</a>
           </div>
           <div className="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1iNnp5Niv8Dn7vcNM6c9pdlIS76RVWog5wA&s" alt="Historical Art" />
-            <h2>Experience the Timeless Beauty of Art Through Historical Eras</h2>
-            <p>Journey through time and witness the evolution of artistic expression.</p>
-            <a href="#">Learn More &gt;</a>
+          <img src={Images.manet} alt="Art History" />
+            <h2>Manet / Degas</h2>
+            <p>Manet and Degas were two pioneers of modern art, blending Realism and Impressionism. Manet’s bold, provocative works challenged tradition, while Degas captured movement and daily life with striking compositions. Rivals yet influential to each other, they reshaped 19th-century art.</p>
+            <a href="https://www.artbasel.com/" target="_blank" rel="noopener noreferrer">Learn More &gt;</a>
           </div>
         </div>
       </div>
 
-      <div className="gallery-section">
+      <div className="gallery-section" id = "gall">
         <h1 className="gallery-title">Art Gallery</h1>
-        <p className="gallery-desc">Explore our curated collection of stunning artworks.</p>
+        <p className="gallery-desc">"Every painting is a voyage into a sacred harbour of imagination."– Giotto di Bondone</p>
 
         <div className="carousel-container">
           <button
@@ -121,16 +104,28 @@ const Home = () => {
 
           <Slider ref={sliderRef} {...settings} className="carousel">
   <div className="carousel-item">
-    <img src="https://m.media-amazon.com/images/I/81v1kCWtpQL.jpg" alt="Art 1" />
+    <img src ={Images.img1} alt="Art 1" />
   </div>
   <div className="carousel-item">
-    <img src="https://m.media-amazon.com/images/I/81v1kCWtpQL.jpg" alt="Art 2" />
+    <img src ={Images.img2} alt="Art 2" />
   </div>
   <div className="carousel-item">
-    <img src="https://m.media-amazon.com/images/I/81v1kCWtpQL.jpg" alt="Art 3" />
+    <img src ={Images.img3} alt="Art 3" />
   </div>
   <div className="carousel-item">
-    <img src="https://m.media-amazon.com/images/I/81v1kCWtpQL.jpg" alt="Art 4" />
+    <img src ={Images.img4} alt="Art 4" />
+  </div>
+  <div className="carousel-item">
+    <img src ={Images.img5} alt="Art 5" />
+  </div>
+  <div className="carousel-item">
+    <img src ={Images.img6} alt="Art 6" />
+  </div>
+  <div className="carousel-item">
+    <img src ={Images.img7} alt="Art 7" />
+  </div>
+  <div className="carousel-item">
+    <img src ={Images.img8} alt="Art 8" />
   </div>
 </Slider>
 
@@ -142,19 +137,21 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <section className="newsletter-section">
+      <section className="newsletter-section" id = "contact">
         <h2>Stay Updated on Art Discoveries</h2>
         <p>Subscribe now to receive the latest news on new paintings and upcoming exhibitions.</p>
         <div className="newsletter-buttons">
           <button className="subscribe-btn">Subscribe</button>
+          <Link to="/query"> 
           <button className="learn-btn">Learn More</button>
+          </Link>
         </div>
       </section>
 
       <footer className="footer">
         <div className="footer-container">
           <div className="footer-logo">
-            <h3>Logo</h3>
+            <h3>Famous Paintings</h3>
           </div>
           <div className="footer-column">
             <h4>Explore Art</h4>

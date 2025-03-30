@@ -15,7 +15,7 @@
   }
   
   .logo {
-    font-size: 24px;
+    font-size: 45px;
     font-weight: bold;
     font-style: italic;
   }
@@ -34,6 +34,7 @@
   
   .nav-links li a:hover {
     color: #800040;
+    text-decoration: underline;
   }
   
   .dropdown .arrow {
@@ -54,6 +55,7 @@
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 5px;
+    text-decoration: none;
   }
   
   .explore-btn {
