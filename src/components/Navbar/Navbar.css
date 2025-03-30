@@ -1,0 +1,79 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5e9e9;
+    padding: 15px 40px;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 30px; 
+    padding-left: 150px;
+  }
+  
+  .logo {
+    font-size: 45px;
+    font-weight: bold;
+    font-style: italic;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+  
+  .nav-links li a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+  }
+  
+  .nav-links li a:hover {
+    color: #800040;
+    text-decoration: underline;
+  }
+  
+  .dropdown .arrow {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 15px;
+    padding-right: 180px;
+  }
+  
+  .join-btn {
+    background: transparent;
+    color: black;
+    border: 2px solid black;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .explore-btn {
+    background: #800040;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid black
+  }
+  
+  .join-btn:hover {
+    background: #660033;
+    color: white;
+  }
+  
+  .explore-btn:hover {
+    background: #660033;
+  }
+  
