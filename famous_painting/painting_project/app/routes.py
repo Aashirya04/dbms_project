@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request
 from app import mysql  
 
-@app.route('/')
+@app.route('/api/paintings')
 def index():
     artist_filter = request.args.get('artist')
     style_filter = request.args.get('style')
@@ -60,7 +60,7 @@ def index():
     paintings = cursor.fetchall()
     cursor.close()
 
-    return render_template('index.html', paintings=paintings, artist_list=artist_list, style_list=style_list, museum_list=museum_list, painting_list=painting_list)
+    return {"paintings": [{"name": p[0], "artist": p[1], "style": p[2], "image": p[3], "museum": p[4]} for p in paintings]}
 
 @app.route('/top_5_artists')
 def top_5_artists():
