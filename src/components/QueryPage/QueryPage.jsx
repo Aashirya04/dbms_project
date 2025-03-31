@@ -1,49 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./QueryPage.css";
+import axios from "axios";
 
 const fixedQueries = [
-"Top 5 Artists",
-"Artists in Multiple Museums",
-"Artists with Multiple Styles",
-"Top Museums by Paintings",
-"City with Most Museums",
-"Museums Open on Sundays",
-"Most Common Painting Subjects",
-"Most Used Painting Style",
-"Artists in At Least 3 Museums",
-"Most Visually Documented Artist",
-"Paintings by Artists in Their Own Country",
-"Paintings with Multiple Styles",
-];
-
-const paintingsData = [
-  {
-    name: "Starry Night",
-    artist: "Vincent van Gogh",
-    style: "Post-Impressionism",
-    museum: "Museum of Modern Art",
-    image: "https://example.com/starry-night.jpg",
-  },
-  {
-    name: "Mona Lisa",
-    artist: "Leonardo da Vinci",
-    style: "Renaissance",
-    museum: "Louvre Museum",
-    image: "https://example.com/mona-lisa.jpg",
-  },
+  "Top 5 Artists",
+  "Artists in Multiple Museums",
+  "Artists with Multiple Styles",
+  "Top Museums by Paintings",
+  "City with Most Museums",
+  "Museums Open on Sundays",
+  "Most Common Painting Subjects",
+  "Most Used Painting Style",
+  "Artists in At Least 3 Museums",
+  "Most Visually Documented Artist",
+  "Paintings by Artists in Their Own Country",
+  "Paintings with Multiple Styles",
 ];
 
 const QueryPage = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState(null);
-  const [filters, setFilters] = useState({ artist: "", style: "", museum: "", painting: "" });
+  const [filters, setFilters] = useState({ artist: "", style: "", museum: "", name: "" });
+  const [paintings, setPaintings] = useState([]);
 
-  const filteredPaintings = paintingsData.filter((painting) =>
+  useEffect(() => {
+    async function fetchPaintings() {
+      try {
+        const res = await axios.get("http://localhost:5000/api/paintings");
+        setPaintings(res.data.paintings);
+      } catch (error) {
+        console.error("Error fetching paintings:", error);
+      }
+    }
+    fetchPaintings();
+  }, []);
+
+  const filteredPaintings = paintings.filter((painting) =>
     Object.entries(filters).every(([key, value]) =>
       value ? (painting[key] && painting[key].toLowerCase() === value.toLowerCase()) : true
     )
   );
-  
 
   return (
     <div className={`query-container ${darkMode ? "dark-mode" : ""}`}>
@@ -54,7 +50,6 @@ const QueryPage = () => {
         </button>
       </div>
 
-      {/* Fixed Queries */}
       <div className="fixed-queries">
         <h2>Fixed Queries</h2>
         <div className="query-list">
@@ -66,7 +61,6 @@ const QueryPage = () => {
         </div>
       </div>
 
-      {/* Pop-up Box for Fixed Query */}
       {selectedQuery && (
         <div className={`popup ${darkMode ? "dark-mode-popup" : ""}`}>
           <div className="popup-content">
@@ -77,38 +71,36 @@ const QueryPage = () => {
         </div>
       )}
 
-      {/* Filters */}
       <div className="filters">
         <select onChange={(e) => setFilters({ ...filters, artist: e.target.value })}>
           <option value="">Filter by Artist</option>
-          {Array.from(new Set(paintingsData.map((p) => p.artist))).map((artist) => (
+          {Array.from(new Set(paintings.map((p) => p.artist))).map((artist) => (
             <option key={artist} value={artist}>{artist}</option>
           ))}
         </select>
 
         <select onChange={(e) => setFilters({ ...filters, style: e.target.value })}>
           <option value="">Filter by Style</option>
-          {Array.from(new Set(paintingsData.map((p) => p.style))).map((style) => (
+          {Array.from(new Set(paintings.map((p) => p.style))).map((style) => (
             <option key={style} value={style}>{style}</option>
           ))}
         </select>
 
         <select onChange={(e) => setFilters({ ...filters, museum: e.target.value })}>
           <option value="">Filter by Museum</option>
-          {Array.from(new Set(paintingsData.map((p) => p.museum))).map((museum) => (
+          {Array.from(new Set(paintings.map((p) => p.museum))).map((museum) => (
             <option key={museum} value={museum}>{museum}</option>
           ))}
         </select>
 
         <select onChange={(e) => setFilters({ ...filters, name: e.target.value })}>
           <option value="">Filter by Painting</option>
-          {Array.from(new Set(paintingsData.map((p) => p.name))).map((name) => (
+          {Array.from(new Set(paintings.map((p) => p.name))).map((name) => (
             <option key={name} value={name}>{name}</option>
           ))}
         </select>
       </div>
 
-      {/* Results Table */}
       <table className="results-table">
         <thead>
           <tr>
