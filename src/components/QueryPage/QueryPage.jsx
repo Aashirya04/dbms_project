@@ -12,16 +12,32 @@ const fixedQueries = [
   "Most Common Painting Subjects",
   "Most Used Painting Style",
   "Artists in At Least 3 Museums",
-  "Most Visually Documented Artist",
+  "Paintings by Area",
   "Paintings by Artists in Their Own Country",
   "Paintings with Multiple Styles",
 ];
+
+const queryToEndpoint = {
+  "Top 5 Artists": "/top_5_artists",
+  "Artists in Multiple Museums": "/artists_multiple_museums",
+  "Artists with Multiple Styles": "/artists_multiple_styles",
+  "Top Museums by Paintings": "/top_museums",
+  "City with Most Museums": "/city_with_most_museums",
+  "Museums Open on Sundays": "/museums_open_sunday",
+  "Most Common Painting Subjects": "/common_painting_subjects",
+  "Most Used Painting Style": "/most_used_style",
+  "Artists in At Least 3 Museums": "/artists_three_museums",
+  "Paintings by Area": "/paintings_by_area",
+  "Paintings by Artists in Their Own Country": "/top-artists-by-paintings",
+  "Paintings with Multiple Styles": "/paintings_multiple_styles",
+};
 
 const QueryPage = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [filters, setFilters] = useState({ artist: "", style: "", museum: "", name: "" });
   const [paintings, setPaintings] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchPaintings() {
@@ -34,6 +50,28 @@ const QueryPage = () => {
     }
     fetchPaintings();
   }, []);
+
+  useEffect(() => {
+    async function fetchPaintings() {
+      if (!selectedQuery) return;
+
+      const endpoint = queryToEndpoint[selectedQuery];
+      if (!endpoint) return;
+
+      setLoading(true);
+      try {
+        const res = await axios.get(`http://localhost:5000${endpoint}`);
+        setPaintings(res.data.results || []);
+        console.log(res.data.results);
+      } catch (error) {
+        console.error("Error fetching paintings:", error);
+        setPaintings([]);
+      }
+      setLoading(false);
+    }
+
+    fetchPaintings();
+  }, [selectedQuery]);
 
   const filteredPaintings = paintings.filter((painting) =>
     Object.entries(filters).every(([key, value]) =>
@@ -65,7 +103,7 @@ const QueryPage = () => {
         <div className={`popup ${darkMode ? "dark-mode-popup" : ""}`}>
           <div className="popup-content">
             <h3>{selectedQuery}</h3>
-            <p>Here is the data related to: {selectedQuery}</p>
+            <p>Showing results for: <strong>{selectedQuery}</strong></p>
             <button className="close-button" onClick={() => setSelectedQuery(null)}>Close</button>
           </div>
         </div>
@@ -102,29 +140,45 @@ const QueryPage = () => {
       </div>
 
       <table className="results-table">
-        <thead>
-          <tr>
-            <th>Painting Name</th>
-            <th>Artist</th>
-            <th>Style</th>
-            <th>Image</th>
-            <th>Museum</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPaintings.map((painting, index) => (
-            <tr key={index}>
-              <td>{painting.name}</td>
-              <td>{painting.artist}</td>
-              <td>{painting.style}</td>
-              <td>
-                <img src={painting.image} alt={painting.name} className="painting-image" />
-              </td>
-              <td>{painting.museum}</td>
-            </tr>
+  <thead>
+    <tr>
+      {filteredPaintings.length > 0 &&
+        Object.keys(filteredPaintings[0]).map((key) => (
+          <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}</th>
+        ))}
+    </tr>
+  </thead>
+  <tbody>
+    {loading ? (
+      <tr>
+        <td colSpan="100%">Loading...</td>
+      </tr>
+    ) : filteredPaintings.length === 0 ? (
+      <tr>
+        <td colSpan="100%">No results found.</td>
+      </tr>
+    ) : (
+      filteredPaintings.map((painting, index) => (
+        <tr key={index}>
+          {Object.entries(painting).map(([key, value]) => (
+            <td key={key}>
+              {key === "image" ? (
+                <img
+                  src={value}
+                  alt={painting.name || "Painting"}
+                  className="painting-image"
+                />
+              ) : (
+                value
+              )}
+            </td>
           ))}
-        </tbody>
-      </table>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
+
     </div>
   );
 };

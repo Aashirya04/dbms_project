@@ -3,8 +3,8 @@ import pandas as pd
 
 conn = pymysql.connect(
     host="localhost",
-    user="aditya",
-    password="Aditya04@mysql",
+    user="test",
+    password="HiThere@789!",
     database="painting_db"
 )
 

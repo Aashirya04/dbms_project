@@ -1,6 +1,7 @@
 from app import app  
 from flask import render_template, request
-from app import mysql  
+from app import mysql
+from flask import jsonify  
 
 @app.route('/api/paintings')
 def index():
@@ -62,7 +63,7 @@ def index():
 
     return {"paintings": [{"name": p[0], "artist": p[1], "style": p[2], "image": p[3], "museum": p[4]} for p in paintings]}
 
-@app.route('/top_5_artists')
+@app.route('/top_5_artists', methods=['GET'])
 def top_5_artists():
     cursor = mysql.connection.cursor()
     cursor.execute("""
@@ -75,9 +76,13 @@ def top_5_artists():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Top 5 Artists", headers=["Artist Name", "No. of Paintings"], results=results)
+    return jsonify({
+        "title": "Top 5 Artists",
+        "headers": ["Artist Name", "No. of Paintings"],
+        "results": [{"artist": r[0], "num_paintings": r[1]} for r in results]
+    })
 
-@app.route('/artists_multiple_museums')
+@app.route('/artists_multiple_museums',methods=['GET'])
 def artists_multiple_museums():
     cursor = mysql.connection.cursor()
     cursor.execute("""
@@ -90,7 +95,12 @@ def artists_multiple_museums():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Artists in Multiple Museums", headers=["Artist Name", "No. of Museums"], results=results)
+    
+    return jsonify({
+        "title": "Artists in Multiple Museums",
+        "headers": ["Artist Name", "No. of Museums"],
+        "results": [{"artist": r[0], "num_museums": r[1]} for r in results]
+    })
 
 @app.route('/artists_multiple_styles')
 def artists_multiple_styles():
@@ -104,7 +114,11 @@ def artists_multiple_styles():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Artists with Multiple Styles", headers=["Artist Name", "No. of Styles"], results=results)
+    return jsonify({
+        "title": "Artists with Multiple Styles",
+        "headers": ["Artist Name", "No. of Styles"],
+        "results": [{"artist": r[0], "num_styles": r[1]} for r in results]
+    })
 
 @app.route('/top_museums')
 def top_museums():
@@ -122,7 +136,12 @@ def top_museums():
     results = cursor.fetchall()
     cursor.close()
 
-    return render_template('results.html', title="Museums with Most Paintings", headers=["Museum Name", "Number of Paintings"], results=results)
+    
+    return jsonify({
+        "title": "Museums with Most Paintings",
+        "headers": ["Museum Name", "Number of Paintings"],
+        "results": [{"museum": r[0], "painting_count": r[1]} for r in results]
+    })
 
 @app.route('/city_with_most_museums')
 def city_with_most_museums():
@@ -140,7 +159,11 @@ def city_with_most_museums():
     results = cursor.fetchall()
     cursor.close()
 
-    return render_template('results.html', title="City with Most Museums", headers=["City", "Number of Museums"], results=results)
+    return jsonify({
+        "title": "City with Most Museums",
+        "headers": ["City", "Number of Museums"],
+        "results": [{"city": r[0], "num_museums": r[1]} for r in results]
+    })
 
 @app.route('/museums_open_sunday')
 def museums_open_sunday():
@@ -153,7 +176,11 @@ def museums_open_sunday():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Museums Open on Sundays", headers=["Museum Name", "Opening Time", "Closing Time"], results=results)
+    return jsonify({
+        "title": "Museums Open on Sundays",
+        "headers": ["Museum Name", "Opening Time", "Closing Time"],
+        "results": [{"museum": r[0], "open_time": r[1], "close_time": r[2]} for r in results]
+    })
 
 
 @app.route('/common_painting_subjects')
@@ -172,7 +199,12 @@ def common_painting_subjects():
     results = cursor.fetchall()
     cursor.close()
 
-    return render_template('results.html', title="Most Common Subjects in Paintings", headers=["Subject", "Count"], results=results)
+    
+    return jsonify({
+        "title": "Most Common Subjects in Paintings",
+        "headers": ["Subject", "Count"],
+        "results": [{"subject": r[0], "subject_count": r[1]} for r in results]
+    })
 
 @app.route('/most_used_style')
 def most_used_style():
@@ -188,7 +220,11 @@ def most_used_style():
     result = cursor.fetchone()
     cursor.close()
     
-    return render_template('results.html', title="Most Used Painting Style", headers=["Style", "Count"], results=[result])
+    return jsonify({
+        "title": "Most Used Painting Style",
+        "headers": ["Style", "Count"],
+        "results": [{"style": result[0], "count": result[1]}] if result else []
+    })
 
 @app.route('/artists_three_museums')
 def artists_three_museums():
@@ -203,8 +239,11 @@ def artists_three_museums():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Artists with Paintings in at Least Three Museums",
-                           headers=["Artist Name", "No. of Museums"], results=results)
+    return jsonify({
+        "title": "Artists with Paintings in at Least Three Museums",
+        "headers": ["Artist Name", "No. of Museums"],
+        "results": [{"artist": r[0], "num_museums": r[1]} for r in results]
+    })
 
 @app.route('/most_documented_artist')
 def most_documented_artist():
@@ -220,8 +259,11 @@ def most_documented_artist():
     """)
     result = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Most Visually Documented Artist",
-                           headers=["Artist Name", "No. of Images"], results=result)
+    return jsonify({
+        "title": "Most Visually Documented Artist",
+        "headers": ["Artist Name", "No. of Images"],
+        "results": [{"artist": result[0], "num_images": result[1]}] if result else []
+    })
 
 @app.route('/top-artists-by-paintings')
 def top_artists_by_paintings():
@@ -248,7 +290,11 @@ def top_artists_by_paintings():
     title = "Top Artists by Paintings"
 
     # Render the template and pass the necessary data
-    return render_template('results.html', title=title, headers=headers, results=results)
+    return jsonify({
+        "title": title,
+        "headers": headers,
+        "results": [{"artist": r[0], "paintings_count": r[1]} for r in results]
+    })
 
 @app.route('/paintings_multiple_styles')
 def paintings_multiple_styles():
@@ -262,9 +308,12 @@ def paintings_multiple_styles():
     """)
     results = cursor.fetchall()
     cursor.close()
-    return render_template('results.html', title="Paintings with Multiple Styles",
-                           headers=["Painting Name", "Styles"], results=results)
-
+    return jsonify({
+        "title": "Paintings with Multiple Styles",
+        "headers": ["Painting Name", "Styles"],
+        "results": [{"painting_name": r[0], "styles": r[1]} for r in results]
+    })
+    
 @app.route('/canvas_size_count')
 def canvas_size_count():
     cursor = mysql.connection.cursor()
@@ -282,8 +331,11 @@ def canvas_size_count():
     results = cursor.fetchall()
     cursor.close()
 
-    return render_template('results.html', title="Canvas Sizes and Painting Counts", headers=["Canvas Size", "Painting Count"], results=results)
-
+    return jsonify({
+        "title": "Canvas Sizes and Painting Counts",
+        "headers": ["Canvas Size", "Painting Count"],
+        "results": [{"canvas_size": r[0], "painting_count": r[1]} for r in results]
+    })
 
 @app.route('/most_exhibited_artist')
 def most_exhibited_artist():
@@ -305,11 +357,17 @@ def most_exhibited_artist():
 
     # Display the result
     if result:
-        artist_name = result[0]
-        num_museums = result[1]
-        return render_template('results.html', title="Most Exhibited Artist", headers=["Artist Name", "Number of Museums"], results=[(artist_name, num_museums)])
+        return jsonify({
+            "title": "Most Exhibited Artist",
+            "headers": ["Artist Name", "Number of Museums"],
+            "results": [{"artist_name": result[0], "num_museums": result[1]}]
+        })
     else:
-        return "No data found."
+        return jsonify({
+            "title": "Most Exhibited Artist",
+            "headers": ["Artist Name", "Number of Museums"],
+            "results": []
+        })
 
 @app.route('/paintings_by_area')
 def paintings_by_area():
@@ -329,8 +387,16 @@ def paintings_by_area():
 
     # Display the result
     if results:
-        return render_template('results.html', title="Paintings Ordered by Area", headers=["Painting", "Artist", "Width", "Height", "Area"], results=results)
+        return jsonify({
+            "title": "Paintings Ordered by Area",
+            "headers": ["Painting", "Artist", "Width", "Height", "Area"],
+            "results": [{"painting": r[0], "artist": r[1], "width": r[2], "height": r[3], "area": r[4]} for r in results]
+        })
     else:
-        return "No data found."
+        return jsonify({
+            "title": "Paintings Ordered by Area",
+            "headers": ["Painting", "Artist", "Width", "Height", "Area"],
+            "results": []
+        })
 
 
